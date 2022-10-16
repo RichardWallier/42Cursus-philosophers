@@ -6,62 +6,11 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 05:22:38 by rwallier          #+#    #+#             */
-/*   Updated: 2022/10/09 11:55:52 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/10/16 15:16:02 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-#include <pthread.h>
-#include <sys/time.h>
-
-void	*routine(void *arg)
-{
-	t_args *args;
-	struct timeval current_time;
-	int forks;
-
-	args = arg;
-	while (1)
-	{
-		while (1)
-		{
-			if (args->forks[args->philosopher] == 0 || args->forks[args->philosopher - 1] == 0)
-			{
-				pthread_mutex_lock(&args->mutex);
-				if (args->forks[args->philosopher] == 0)
-				{
-					gettimeofday(&current_time, NULL);
-					args->forks[args->philosopher] = 1;
-					forks++;
-					printf("%li philosopher: %d has taken a fork\n", current_time.tv_usec, args->philosopher);
-				}
-				if (args->forks[args->amount_of_forks - 1])
-				{
-					gettimeofday(&current_time, NULL);
-					args->forks[args->amount_of_forks - 1] = 1;
-					forks++;
-					printf("%li philosopher: %d has taken a fork\n", current_time.tv_usec, args->philosopher);
-				}
-				pthread_mutex_unlock(&args->mutex);
-				if (forks == 2)
-				{
-					printf("philosopher: %d eat\n", args->philosopher);
-					usleep(args->time_to_eat * 6000000);
-					pthread_mutex_lock(&args->mutex);
-					args->forks[args->philosopher] = 0;
-					args->forks[args->amount_of_forks - 1] = 0;
-					pthread_mutex_unlock(&args->mutex);
-					forks = 0;
-					break;
-				}
-			}
-		}
-		printf("philosopher: %d sleep\n", args->philosopher);
-		usleep(args->time_to_sleep * 600000);
-		printf("philosopher: %d think\n", args->philosopher);
-	}
-	return (NULL);
-}
 
 int		create_threads(pthread_t **thread, t_args *args, int philosophers_amount)
 {

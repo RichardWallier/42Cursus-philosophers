@@ -1,4 +1,4 @@
-SOURCES	=	main.c utils.c
+SOURCES	=	main.c utils.c routine.c
 
 OBJECTS	=	$(SOURCES:.c=.o)
 
