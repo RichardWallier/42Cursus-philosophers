@@ -6,37 +6,32 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 15:16:40 by rwallier          #+#    #+#             */
-/*   Updated: 2022/10/16 16:58:43 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/10/17 10:38:48 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	has_fork(int left_fork, int right_fork, t_args *args)
-{
-	if (args->forks[left_fork] == 0)
-		return (1);
-	if (args->forks[right_fork] == 0)
-		return (2);
-	return (0);
-}
-
 void	*die_monitoring(void *arg)
 {
-	struct timeval	current_time;
+	// struct timeval	current_time;
 	t_args			*args;
 
 	args = arg;
-	while (1)
-	{
-		gettimeofday(&current_time, NULL);
-		if (current_time.tv_usec >= args->time_checkpoint + args->time_to_die)
-		{
-			gettimeofday(&current_time, NULL);
-			printf("%lu %d is died\n", current_time.tv_usec, args->philosopher);
-			exit(EXIT_SUCCESS);
-		}
-	}
+	// while (1)
+	// {
+	// 	gettimeofday(&current_time, NULL);
+	// 	if (current_time.tv_usec >= (args->time_checkpoint + args->time_to_die))
+	// 	{
+	// 		gettimeofday(&current_time, NULL);
+	// 		printf("%d %d is died\n", current_time.tv_usec, args->philosopher);
+	// 		free(args);
+	// 		exit(EXIT_SUCCESS);
+	// 	}
+	// }
+	usleep(5 * 1000000);
+	free(args);
+	exit(0);
 	return (NULL);
 }
 
@@ -47,9 +42,9 @@ void	*routine(void *arg)
 	struct timeval	current_time;
 	int				forks;
 
-	gettimeofday(&current_time, NULL);
 	args = arg;
-	args->time_checkpoint = 9999999999999999999u;
+	gettimeofday(&current_time, NULL);
+	args->time_checkpoint = current_time.tv_usec;
 	forks = 0;
 	pthread_create(&thread, NULL, &die_monitoring, args);
 	while (1)
@@ -60,78 +55,81 @@ void	*routine(void *arg)
 			{
 				if (args->forks[args->philosopher] == 0)
 				{
-					pthread_mutex_lock(&args->mutex);
 					gettimeofday(&current_time, NULL);
-					printf("%lu %d has taken a fork\n", current_time.tv_usec, args->philosopher);
+					printf("%d %d has taken a fork\n", current_time.tv_usec, args->philosopher);
+					pthread_mutex_lock(&args->mutex[args->philosopher]);
 					args->forks[args->philosopher] = 1;
+					pthread_mutex_unlock(&args->mutex[args->philosopher]);
 					forks++;
-					pthread_mutex_unlock(&args->mutex);
 				}
 				if (args->forks[args->amount_of_forks - 1] == 0)
 				{
-					pthread_mutex_lock(&args->mutex);
 					gettimeofday(&current_time, NULL);
-					printf("%lu %d has taken a fork\n", current_time.tv_usec, args->philosopher);
+					printf("%d %d has taken a fork\n", current_time.tv_usec, args->philosopher);
+					pthread_mutex_lock(&args->mutex[args->amount_of_forks - 1]);
 					args->forks[args->amount_of_forks - 1] = 1;
+					pthread_mutex_unlock(&args->mutex[args->amount_of_forks - 1]);
 					forks++;
-					pthread_mutex_unlock(&args->mutex);
 				}
 				if (forks == 2)
 				{
 					gettimeofday(&current_time, NULL);
 					args->time_checkpoint = current_time.tv_usec;
-					printf("%lu %d is eating\n", current_time.tv_usec, args->philosopher);
+					printf("%d %d is eating\n", current_time.tv_usec, args->philosopher);
 					usleep(args->time_to_eat);
-					pthread_mutex_lock(&args->mutex);
+					pthread_mutex_lock(&args->mutex[args->amount_of_forks - 1]);
+					pthread_mutex_lock(&args->mutex[args->philosopher]);
 					args->forks[args->amount_of_forks - 1] = 0;
 					args->forks[args->philosopher] = 0;
-					pthread_mutex_unlock(&args->mutex);
+					pthread_mutex_unlock(&args->mutex[args->amount_of_forks - 1]);
+					pthread_mutex_unlock(&args->mutex[args->philosopher]);
 					forks = 0;
-					printf("%lu %d is sleeping\n", current_time.tv_usec, args->philosopher);
+					printf("%d %d is sleeping\n", current_time.tv_usec, args->philosopher);
 					usleep(args->time_to_sleep);
 					break;
 				}
 			}
 			else
 			{
-				if (has_fork(args->philosopher - 1, args->philosopher, args) == 2)
+				if (args->forks[args->philosopher] == 0)
 				{
 					gettimeofday(&current_time, NULL);
-					printf("%lu %d has taken a fork\n", current_time.tv_usec, args->philosopher);
-					pthread_mutex_lock(&args->mutex);
+					printf("%d %d has taken a fork\n", current_time.tv_usec, args->philosopher);
+					pthread_mutex_lock(&args->mutex[args->philosopher]);
 					args->forks[args->philosopher] = 1;
+					pthread_mutex_unlock(&args->mutex[args->philosopher]);
 					forks++;
-					pthread_mutex_unlock(&args->mutex);
 				}
-				if (has_fork(args->philosopher - 1, args->philosopher, args) == 1)
+				if (args->forks[args->philosopher - 1] == 0)
 				{
 					gettimeofday(&current_time, NULL);
-					printf("%lu %d has taken a fork\n", current_time.tv_usec, args->philosopher);
-					pthread_mutex_lock(&args->mutex);
+					printf("%d %d has taken a fork\n", current_time.tv_usec, args->philosopher);
+					pthread_mutex_lock(&args->mutex[args->philosopher - 1]);
 					args->forks[args->philosopher - 1] = 1;
+					pthread_mutex_unlock(&args->mutex[args->philosopher - 1]);
 					forks++;
-					pthread_mutex_unlock(&args->mutex);
 				}
 				if (forks == 2)
 				{
 					gettimeofday(&current_time, NULL);
 					args->time_checkpoint = current_time.tv_usec;
-					printf("%lu %d is eating\n", current_time.tv_usec, args->philosopher);
+					printf("%d %d is eating\n", current_time.tv_usec, args->philosopher);
 					usleep(args->time_to_eat);
-					pthread_mutex_lock(&args->mutex);
+					pthread_mutex_lock(&args->mutex[args->philosopher - 1]);
+					pthread_mutex_lock(&args->mutex[args->philosopher]);
 					args->forks[args->philosopher - 1] = 0;
 					args->forks[args->philosopher] = 0;
-					pthread_mutex_unlock(&args->mutex);
+					pthread_mutex_unlock(&args->mutex[args->philosopher - 1]);
+					pthread_mutex_unlock(&args->mutex[args->philosopher]);
 					forks = 0;
-					gettimeofday(&current_time, NULL);
-					printf("%lu %d is sleeping\n", current_time.tv_usec, args->philosopher);
+					printf("%d %d is sleeping\n", current_time.tv_usec, args->philosopher);
 					usleep(args->time_to_sleep);
 					break;
 				}
 			}
 		}
 		gettimeofday(&current_time, NULL);
-		printf("%lu %d is thinking\n", current_time.tv_usec, args->philosopher);
+		printf("%d %d is thinking\n", current_time.tv_usec, args->philosopher);
 	}
 	return (NULL);
 }

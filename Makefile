@@ -1,10 +1,10 @@
-SOURCES	=	main.c utils.c routine.c
+SOURCES	=	main.c utils.c routine.c thread.c
 
 OBJECTS	=	$(SOURCES:.c=.o)
 
 NAME	=	philosophers
 
-CFLAGS	=	
+CFLAGS	=	-Wall -Werror -Wextra
 
 PTHREAD_FLAGS = -pthread
 
