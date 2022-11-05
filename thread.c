@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 08:37:54 by rwallier          #+#    #+#             */
-/*   Updated: 2022/10/17 09:42:30 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/11/04 22:33:24 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,20 @@ int	create_mutex(t_args *args, int amount_of_forks)
 	return (0);
 }
 
-int	create_threads(pthread_t **thread, t_args *args, int philosophers_amount)
+int	create_threads(pthread_t **thread, t_args *args, int philo_amount)
 {
 	int		index;
 	t_args	*current_arg;
 
-	*thread = malloc(philosophers_amount * sizeof(pthread_t));
+	*thread = malloc(philo_amount * sizeof(pthread_t));
 	index = 0;
-	while (index < philosophers_amount)
+	while (index < philo_amount)
 	{
 		current_arg = malloc(1 * sizeof(t_args));
 		current_arg->forks = args->forks;
 		current_arg->mutex = args->mutex;
 		current_arg->philosopher = index;
-		current_arg->amount_of_forks = philosophers_amount;
+		current_arg->amount_of_forks = philo_amount;
 		current_arg->time_to_die = args->time_to_die;
 		current_arg->time_to_eat = args->time_to_eat;
 		current_arg->time_to_sleep = args->time_to_sleep;

@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 15:16:40 by rwallier          #+#    #+#             */
-/*   Updated: 2022/10/17 10:38:48 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/11/04 22:31:36 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,123 +14,63 @@
 
 void	*die_monitoring(void *arg)
 {
-	// struct timeval	current_time;
 	t_args			*args;
+	long long int	current_time;
 
 	args = arg;
-	// while (1)
-	// {
-	// 	gettimeofday(&current_time, NULL);
-	// 	if (current_time.tv_usec >= (args->time_checkpoint + args->time_to_die))
-	// 	{
-	// 		gettimeofday(&current_time, NULL);
-	// 		printf("%d %d is died\n", current_time.tv_usec, args->philosopher);
-	// 		free(args);
-	// 		exit(EXIT_SUCCESS);
-	// 	}
-	// }
-	usleep(5 * 1000000);
-	free(args);
-	exit(0);
+	while (1)
+	{
+		current_time = get_actual_ms();
+		if (current_time >= args->time_checkpoint + args->time_to_die)
+		{
+			printf("%lli %d died\n", current_time, args->philosopher);
+			exit(1);
+		}
+	}
 	return (NULL);
+}
+
+void	eating(void *arg, int left_fork, int right_fork)
+{
+	t_args			*args;
+	long long int	current_time;
+
+	args = arg;
+	args->time_checkpoint = get_actual_ms();
+	pthread_mutex_lock(&args->mutex[right_fork]);
+	current_time = get_actual_ms();
+	printf("%lli %d has taken a right fork\n", current_time, args->philosopher);
+	pthread_mutex_lock(&args->mutex[left_fork]);
+	current_time = get_actual_ms();
+	printf("%lli %d has taken a left fork\n", current_time, args->philosopher);
+	current_time = get_actual_ms();
+	printf("%lli %d is eating\n", current_time, args->philosopher);
+	args->time_checkpoint = current_time;
+	usleep(args->time_to_eat * 1000);
+	pthread_mutex_unlock(&args->mutex[right_fork]);
+	pthread_mutex_unlock(&args->mutex[left_fork]);
+	current_time = get_actual_ms();
+	printf("%lli %d is sleeping\n", current_time, args->philosopher);
+	usleep(args->time_to_sleep * 1000);
 }
 
 void	*routine(void *arg)
 {
 	t_args			*args;
 	pthread_t		thread;
-	struct timeval	current_time;
-	int				forks;
+	long long int	current_time;
 
 	args = arg;
-	gettimeofday(&current_time, NULL);
-	args->time_checkpoint = current_time.tv_usec;
-	forks = 0;
+	args->time_checkpoint = get_actual_ms();
 	pthread_create(&thread, NULL, &die_monitoring, args);
-	while (1)
+	while (42)
 	{
-		while (1)
-		{
-			if (args->philosopher == 0)
-			{
-				if (args->forks[args->philosopher] == 0)
-				{
-					gettimeofday(&current_time, NULL);
-					printf("%d %d has taken a fork\n", current_time.tv_usec, args->philosopher);
-					pthread_mutex_lock(&args->mutex[args->philosopher]);
-					args->forks[args->philosopher] = 1;
-					pthread_mutex_unlock(&args->mutex[args->philosopher]);
-					forks++;
-				}
-				if (args->forks[args->amount_of_forks - 1] == 0)
-				{
-					gettimeofday(&current_time, NULL);
-					printf("%d %d has taken a fork\n", current_time.tv_usec, args->philosopher);
-					pthread_mutex_lock(&args->mutex[args->amount_of_forks - 1]);
-					args->forks[args->amount_of_forks - 1] = 1;
-					pthread_mutex_unlock(&args->mutex[args->amount_of_forks - 1]);
-					forks++;
-				}
-				if (forks == 2)
-				{
-					gettimeofday(&current_time, NULL);
-					args->time_checkpoint = current_time.tv_usec;
-					printf("%d %d is eating\n", current_time.tv_usec, args->philosopher);
-					usleep(args->time_to_eat);
-					pthread_mutex_lock(&args->mutex[args->amount_of_forks - 1]);
-					pthread_mutex_lock(&args->mutex[args->philosopher]);
-					args->forks[args->amount_of_forks - 1] = 0;
-					args->forks[args->philosopher] = 0;
-					pthread_mutex_unlock(&args->mutex[args->amount_of_forks - 1]);
-					pthread_mutex_unlock(&args->mutex[args->philosopher]);
-					forks = 0;
-					printf("%d %d is sleeping\n", current_time.tv_usec, args->philosopher);
-					usleep(args->time_to_sleep);
-					break;
-				}
-			}
-			else
-			{
-				if (args->forks[args->philosopher] == 0)
-				{
-					gettimeofday(&current_time, NULL);
-					printf("%d %d has taken a fork\n", current_time.tv_usec, args->philosopher);
-					pthread_mutex_lock(&args->mutex[args->philosopher]);
-					args->forks[args->philosopher] = 1;
-					pthread_mutex_unlock(&args->mutex[args->philosopher]);
-					forks++;
-				}
-				if (args->forks[args->philosopher - 1] == 0)
-				{
-					gettimeofday(&current_time, NULL);
-					printf("%d %d has taken a fork\n", current_time.tv_usec, args->philosopher);
-					pthread_mutex_lock(&args->mutex[args->philosopher - 1]);
-					args->forks[args->philosopher - 1] = 1;
-					pthread_mutex_unlock(&args->mutex[args->philosopher - 1]);
-					forks++;
-				}
-				if (forks == 2)
-				{
-					gettimeofday(&current_time, NULL);
-					args->time_checkpoint = current_time.tv_usec;
-					printf("%d %d is eating\n", current_time.tv_usec, args->philosopher);
-					usleep(args->time_to_eat);
-					pthread_mutex_lock(&args->mutex[args->philosopher - 1]);
-					pthread_mutex_lock(&args->mutex[args->philosopher]);
-					args->forks[args->philosopher - 1] = 0;
-					args->forks[args->philosopher] = 0;
-					pthread_mutex_unlock(&args->mutex[args->philosopher - 1]);
-					pthread_mutex_unlock(&args->mutex[args->philosopher]);
-					forks = 0;
-					printf("%d %d is sleeping\n", current_time.tv_usec, args->philosopher);
-					usleep(args->time_to_sleep);
-					break;
-				}
-			}
-		}
-		gettimeofday(&current_time, NULL);
-		printf("%d %d is thinking\n", current_time.tv_usec, args->philosopher);
+		if (args->philosopher == 0)
+			eating(arg, args->amount_of_forks - 1, args->philosopher);
+		else
+			eating(arg, args->philosopher - 1, args->philosopher);
+		current_time = get_actual_ms();
+		printf("%lli %d is thinking\n", current_time, args->philosopher);
 	}
 	return (NULL);
 }
-
