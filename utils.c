@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 09:05:08 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/08 14:35:36 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/08 14:47:48 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	ft_atoi(const char *str)
 	return (sign * res);
 }
 
-void	ft_smart_sleep(long int milisseconds)
+void	ft_smart_sleep(int milisseconds)
 {
 	long int	start_ms;
 

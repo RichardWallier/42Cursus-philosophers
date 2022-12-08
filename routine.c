@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 15:16:40 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/08 14:27:51 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/08 14:49:30 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,13 @@ void	eating(void *arg, int left_fork, int right_fork)
 	args->time_checkpoint = get_actual_ms();
 
 	printf("%li %d is eating\n", get_actual_ms(), args->philosopher);
-	usleep(args->time_to_eat * 1000);
+	ft_smart_sleep(args->time_to_eat);
 	printf("%li %d is sleeping\n", get_actual_ms(), args->philosopher);
 
 	pthread_mutex_unlock(&args->mutex[right_fork]);
 	pthread_mutex_unlock(&args->mutex[left_fork]);
 
-	usleep(args->time_to_sleep * 1000);
+	ft_smart_sleep(args->time_to_sleep);
 	printf("%li %d is thinking\n", get_actual_ms(), args->philosopher);
 }
 

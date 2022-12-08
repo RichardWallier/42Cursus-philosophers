@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 05:22:44 by rwallier          #+#    #+#             */
-/*   Updated: 2022/11/05 16:12:48 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/08 14:47:54 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,7 @@ int			ft_atoi(const char *str);
 long int	get_actual_ms(void);
 
 int			free_all(t_args *args, pthread_t **threads);
+
+void	ft_smart_sleep(int milisseconds);
 
 #endif // !PHILOSOPHERS_H
