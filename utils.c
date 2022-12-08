@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 09:05:08 by rwallier          #+#    #+#             */
-/*   Updated: 2022/11/04 22:33:00 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/08 14:35:36 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	parse_args(t_args *args, const char **argv, int argc)
 {
 	args->time_to_die = ft_atoi(argv[argc - 3]);
 	args->time_to_eat = ft_atoi(argv[argc - 2]);
+	printf("%d\n", args->time_to_eat);
 	args->time_to_sleep = ft_atoi(argv[argc - 1]);
 	return (1);
 }
@@ -24,7 +25,7 @@ int	parse_args(t_args *args, const char **argv, int argc)
 long int	get_actual_ms(void)
 {
 	struct timeval	current_time;
-	long long int	ms;
+	long int	ms;
 
 	gettimeofday(&current_time, NULL);
 	ms = (current_time.tv_sec) * 1000 + (current_time.tv_usec) / 1000;
@@ -57,4 +58,14 @@ int	ft_atoi(const char *str)
 	while (str[i] >= '0' && str[i] <= '9')
 		res = res * 10 + str[i++] - '0';
 	return (sign * res);
+}
+
+void	ft_smart_sleep(long int milisseconds)
+{
+	long int	start_ms;
+
+	start_ms = get_actual_ms();
+	while (start_ms + milisseconds >= get_actual_ms())
+		;
+	return ;
 }

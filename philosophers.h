@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 05:22:44 by rwallier          #+#    #+#             */
-/*   Updated: 2022/11/04 22:36:34 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/11/05 16:12:48 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef struct s_args
 	int				time_to_die;
 	int				*forks;
 	int				philosopher;
-	long long int	time_checkpoint;
+	long int	time_checkpoint;
 	pthread_mutex_t	*mutex;
 }				t_args;
 
