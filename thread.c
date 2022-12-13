@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 08:37:54 by rwallier          #+#    #+#             */
-/*   Updated: 2022/11/05 15:55:01 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/08 16:17:47 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@ int	create_mutex(t_args *args, int amount_of_forks)
 			return (1);
 		index++;
 	}
+	if (pthread_mutex_init(&args->checkpoint, NULL) != 0)
+		return (1);
+	if (pthread_mutex_init(&args->print, NULL) != 0)
+		return (1);
 	return (0);
 }
 
@@ -39,6 +43,8 @@ int	create_threads(pthread_t **thread, t_args *args, int philo_amount)
 		current_arg = malloc(1 * sizeof(t_args));
 		current_arg->forks = args->forks;
 		current_arg->mutex = args->mutex;
+		current_arg->print = args->print;
+		current_arg->checkpoint = args->checkpoint;
 		current_arg->philosopher = index;
 		current_arg->amount_of_forks = philo_amount;
 		current_arg->time_to_die = args->time_to_die;

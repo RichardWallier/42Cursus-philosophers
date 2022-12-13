@@ -6,18 +6,16 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 09:05:08 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/08 14:47:48 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/08 16:12:30 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
-#include <sys/time.h>
 
 int	parse_args(t_args *args, const char **argv, int argc)
 {
 	args->time_to_die = ft_atoi(argv[argc - 3]);
 	args->time_to_eat = ft_atoi(argv[argc - 2]);
-	printf("%d\n", args->time_to_eat);
 	args->time_to_sleep = ft_atoi(argv[argc - 1]);
 	return (1);
 }

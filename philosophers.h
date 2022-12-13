@@ -5,8 +5,7 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/09 05:22:44 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/08 14:47:54 by rwallier         ###   ########.fr       */
+/*   Created: 2022/10/09 05:22:44 by rwallier          #+#    #+#             */ /*   Updated: 2022/12/08 16:10:29 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +28,8 @@ typedef struct s_args
 	int				philosopher;
 	long int	time_checkpoint;
 	pthread_mutex_t	*mutex;
+	pthread_mutex_t	print;
+	pthread_mutex_t	checkpoint;
 }				t_args;
 
 void		*routine(void *arg);
