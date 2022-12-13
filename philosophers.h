@@ -26,9 +26,10 @@ typedef struct s_args
 	int				time_to_die;
 	int				*forks;
 	int				philosopher;
-	long int	time_checkpoint;
+	int				die_status;
+	long int		time_checkpoint;
 	pthread_mutex_t	*mutex;
-	pthread_mutex_t	print;
+	pthread_mutex_t	*print; 
 	pthread_mutex_t	checkpoint;
 }				t_args;
 
@@ -48,6 +49,6 @@ long int	get_actual_ms(void);
 
 int			free_all(t_args *args, pthread_t **threads);
 
-void	ft_smart_sleep(int milisseconds);
+void		ft_smart_sleep(int milisseconds);
 
 #endif // !PHILOSOPHERS_H
