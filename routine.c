@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 15:16:40 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/08 16:54:41 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/13 18:23:27 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,16 +83,14 @@ void	*routine(void *arg)
 	int			*die_status;
 
 	args = arg;
-	if (args->philosopher % 2 == 0)
-		usleep(50);
 	args->time_checkpoint = get_actual_ms();
 	die_status = NULL;
+	if (pthread_mutex_init(&args->checkpoint, NULL) != 0)
+		return (NULL);
 	pthread_create(&thread, NULL, &die_monitoring, args);
 		if (args->philosopher == 0)
-			eating(arg, args->amount_of_forks - 1, args->philosopher);
+			eating(arg, args->philosopher, args->amount_of_forks - 1);
 		else
 			eating(arg, args->philosopher - 1, args->philosopher);
-	pthread_join(thread, (void*)&die_status);
-	printf("DIEDIEDJIEJHDIUJEIUDJDJAOIHJDIOUwHjnd\n");
 	return (NULL);
 }

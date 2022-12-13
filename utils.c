@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 09:05:08 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/08 16:12:30 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/13 18:25:02 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	ft_smart_sleep(int milisseconds)
 	long int	start_ms;
 
 	start_ms = get_actual_ms();
-	while (start_ms + milisseconds >= get_actual_ms())
+	while (start_ms + milisseconds > get_actual_ms())
 		;
 	return ;
 }
