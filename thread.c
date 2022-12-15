@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 08:37:54 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/15 10:25:25 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/15 10:45:05 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int	create_threads(t_manageThreads *args, pthread_t **thread, int philo_amount)
 	while (index < philo_amount)
 	{
 		current_arg = malloc(1 * sizeof(t_args));
-		current_arg->forks = args->args.forks;
 		current_arg->mutex = args->args.mutex;
 		current_arg->print = args->args.print;
 		current_arg->die_status_mutex = args->args.die_status_mutex;

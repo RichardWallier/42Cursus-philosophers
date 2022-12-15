@@ -24,7 +24,6 @@ typedef struct s_args
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				time_to_die;
-	int				*forks;
 	int				philosopher;
 	int				*die_status;
 	long int		time_checkpoint;
