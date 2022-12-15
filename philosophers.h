@@ -26,28 +26,35 @@ typedef struct s_args
 	int				time_to_die;
 	int				*forks;
 	int				philosopher;
-	int				die_status;
+	int				*die_status;
 	long int		time_checkpoint;
 	pthread_mutex_t	*mutex;
 	pthread_mutex_t	*print; 
 	pthread_mutex_t	checkpoint;
 }				t_args;
 
+typedef struct s_manageThreads
+{
+	t_args		args;
+	pthread_t	*threads;
+	int			*die_status;
+}				t_manageThreads;
+
 void		*routine(void *arg);
 
-int			create_threads(pthread_t **thread, t_args *args, int philo_amount);
+int			create_threads( t_manageThreads *args, pthread_t **thread, int philo_amount);
 
-int			create_mutex(t_args *args, int amount_of_forks);
+int			create_mutex(t_manageThreads *args, int amount_of_forks);
 
-int			parse_args(t_args *args, const char **argv, int argc);
+int			parse_args(t_manageThreads *args, const char **argv, int argc);
 
-int			wait_threads(pthread_t **thread, int threads_amount);
+int			wait_threads(t_manageThreads *args, pthread_t **thread, int threads_amount);
 
 int			ft_atoi(const char *str);
 
 long int	get_actual_ms(void);
 
-int			free_all(t_args *args, pthread_t **threads);
+int			free_all(t_manageThreads *args, pthread_t **threads);
 
 void		ft_smart_sleep(int milisseconds);
 

@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 15:16:40 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/13 18:43:12 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/15 09:41:35 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	*die_monitoring(void *arg)
 		{
 			pthread_mutex_lock(args->print);
 			printf("%lli %d died\n", current_time, args->philosopher);
-			args->die_status = 1;
+			*args->die_status = 1;
 			return((void *)42);
 		}
 		pthread_mutex_unlock(&args->checkpoint);
@@ -40,8 +40,6 @@ void	eating(void *arg, int left_fork, int right_fork)
 
 	args = arg;
 		args->time_checkpoint = get_actual_ms();
-		if (args->die_status)
-			exit(0);
 		pthread_mutex_lock(&args->mutex[right_fork]);
 		pthread_mutex_lock(args->print);
 		printf("%li %d has taken a right fork\n", get_actual_ms(), args->philosopher);
@@ -74,8 +72,6 @@ void	eating(void *arg, int left_fork, int right_fork)
 		pthread_mutex_lock(args->print);
 		printf("%li %d is thinking\n", get_actual_ms(), args->philosopher);
 		pthread_mutex_unlock(args->print);
-		if (args->die_status)
-			exit(0);
 }
 
 void	*routine(void *arg)

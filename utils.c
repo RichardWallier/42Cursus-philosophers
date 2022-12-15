@@ -6,17 +6,21 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 09:05:08 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/13 18:25:02 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/15 09:30:22 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	parse_args(t_args *args, const char **argv, int argc)
+int	parse_args(t_manageThreads *args, const char **argv, int argc)
 {
-	args->time_to_die = ft_atoi(argv[argc - 3]);
-	args->time_to_eat = ft_atoi(argv[argc - 2]);
-	args->time_to_sleep = ft_atoi(argv[argc - 1]);
+	args->args.time_to_die = ft_atoi(argv[argc - 3]);
+	args->args.time_to_eat = ft_atoi(argv[argc - 2]);
+	args->args.time_to_sleep = ft_atoi(argv[argc - 1]);
+	args->die_status = (int *)malloc(sizeof(int));
+	*args->die_status = 0;
+	if (!args->die_status)
+		return (0);
 	return (1);
 }
 
