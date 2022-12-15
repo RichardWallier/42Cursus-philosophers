@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 15:16:40 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/15 10:27:28 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/15 10:29:08 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ void	eating(void *arg, int left_fork, int right_fork)
 	t_args			*args;
 
 	args = arg;
+		pthread_mutex_lock(&args->checkpoint);
 		args->time_checkpoint = get_actual_ms();
+		pthread_mutex_unlock(&args->checkpoint);
+
 		pthread_mutex_lock(&args->mutex[right_fork]);
 		pthread_mutex_lock(args->print);
 		printf("%li %d has taken a right fork\n", get_actual_ms(), args->philosopher);
