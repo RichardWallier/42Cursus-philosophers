@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 15:16:40 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/15 12:28:11 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/15 15:38:47 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	*die_monitoring(void *arg)
 	args = arg;
 	while (1)
 	{
+		if (!args->times_to_eat)
+			return ((void*)42) ;
 		current_time = get_actual_ms();
 		pthread_mutex_lock(&args->checkpoint);
 		if (current_time >= args->time_checkpoint + args->time_to_die)
@@ -93,6 +95,8 @@ void	eating(void *arg, int left_fork, int right_fork)
 		pthread_mutex_unlock(&args->mutex[left_fork]);
 		ft_smart_sleep(args->time_to_sleep);
 		print_status(args, "is thinking");
+		if (args->times_to_eat == 1)
+			printf("cabossi %d\n", *args->satiate = 5);
 		args->times_to_eat--;
 	}
 

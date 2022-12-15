@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 09:05:08 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/15 12:13:58 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/15 15:39:59 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int	parse_args(t_manage *args, const char **argv, int argc)
 	args->args.time_to_sleep = ft_atoi(argv[argc - 2]);
 	args->args.times_to_eat = ft_atoi(argv[argc - 1]);
 	args->die_status = (int *)malloc(sizeof(int));
+	args->satiate = (int *)malloc(sizeof(int));
 	*args->die_status = 0;
-	args->args.satiate = (int *)malloc(sizeof(int));
-	args->args.satiate = 0;
+	*args->satiate = 0;
 	if (!args->die_status)
 		return (0);
 	return (1);

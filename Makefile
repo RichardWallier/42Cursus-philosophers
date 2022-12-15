@@ -4,9 +4,9 @@ OBJECTS	=	$(SOURCES:.c=.o)
 
 NAME	=	philosophers
 
-CFLAGS	=	-Wall -Werror -Wextra
+CFLAGS	=	-Wall -Werror -Wextra -fsanitize=address
 
-PTHREAD_FLAGS = -pthread
+PTHREAD_FLAGS = -pthread -fsanitize=address
 
 CC	=	clang
 

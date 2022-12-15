@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 10:56:22 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/15 12:11:39 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/15 15:32:10 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_manage
 	t_args		args;
 	pthread_t	*threads;
 	int			*die_status;
+	int			*satiate;
 }				t_manage;
 
 void		*routine(void *arg);
