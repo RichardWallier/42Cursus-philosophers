@@ -6,13 +6,13 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 09:05:08 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/15 09:30:22 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/15 11:03:41 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	parse_args(t_manageThreads *args, const char **argv, int argc)
+int	parse_args(t_manage *args, const char **argv, int argc)
 {
 	args->args.time_to_die = ft_atoi(argv[argc - 3]);
 	args->args.time_to_eat = ft_atoi(argv[argc - 2]);
@@ -27,7 +27,7 @@ int	parse_args(t_manageThreads *args, const char **argv, int argc)
 long int	get_actual_ms(void)
 {
 	struct timeval	current_time;
-	long int	ms;
+	long int		ms;
 
 	gettimeofday(&current_time, NULL);
 	ms = (current_time.tv_sec) * 1000 + (current_time.tv_usec) / 1000;

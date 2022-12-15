@@ -6,19 +6,19 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 08:37:54 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/15 10:48:45 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/15 11:03:13 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	create_mutex(t_manageThreads *args, int amount_of_forks)
+int	create_mutex(t_manage *args, int amount_of_forks)
 {
 	int		index;
 
-	args->args.mutex = (pthread_mutex_t *)malloc(amount_of_forks * sizeof(pthread_mutex_t));
-	args->args.print = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-	args->args.die_status_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	args->args.mutex = malloc(amount_of_forks * sizeof(pthread_mutex_t));
+	args->args.print = malloc(sizeof(pthread_mutex_t));
+	args->args.die_status_mutex = malloc(sizeof(pthread_mutex_t));
 	index = 0;
 	while (index < amount_of_forks)
 	{
@@ -33,21 +33,21 @@ int	create_mutex(t_manageThreads *args, int amount_of_forks)
 	return (0);
 }
 
-int	create_threads(t_manageThreads *args, pthread_t **thread, int philo_amount)
+int	create_threads(t_manage *args, pthread_t **thread, int philo)
 {
 	int		index;
 	t_args	*current_arg;
 
-	*thread = malloc(philo_amount * sizeof(pthread_t));
+	*thread = malloc(philo * sizeof(pthread_t));
 	index = 0;
-	while (index < philo_amount)
+	while (index < philo)
 	{
 		current_arg = malloc(1 * sizeof(t_args));
 		current_arg->mutex = args->args.mutex;
 		current_arg->print = args->args.print;
 		current_arg->die_status_mutex = args->args.die_status_mutex;
 		current_arg->philosopher = index;
-		current_arg->amount_of_forks = philo_amount;
+		current_arg->amount_of_forks = philo;
 		current_arg->die_status = args->die_status;
 		current_arg->time_to_die = args->args.time_to_die;
 		current_arg->time_to_eat = args->args.time_to_eat;
@@ -59,7 +59,7 @@ int	create_threads(t_manageThreads *args, pthread_t **thread, int philo_amount)
 	return (0);
 }
 
-int	wait_threads(t_manageThreads *args, pthread_t **thread, int threads_amount)
+int	wait_threads(t_manage *args, pthread_t **thread, int threads)
 {
 	int		index;
 
@@ -68,10 +68,10 @@ int	wait_threads(t_manageThreads *args, pthread_t **thread, int threads_amount)
 	{
 		pthread_mutex_lock(args->args.die_status_mutex);
 		if (*(args->die_status))
-			break;
+			break ;
 		pthread_mutex_unlock(args->args.die_status_mutex);
 	}
-	while (index < threads_amount)
+	while (index < threads)
 	{
 		if (pthread_detach((*thread)[index]) != 0)
 			return (1);
