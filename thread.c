@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 08:37:54 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/15 10:47:42 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/15 10:48:45 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ int	create_threads(t_manageThreads *args, pthread_t **thread, int philo_amount)
 		current_arg->philosopher = index;
 		current_arg->amount_of_forks = philo_amount;
 		current_arg->die_status = args->die_status;
-		current_arg->time_to_die = 800;
-		current_arg->time_to_eat = 200;
-		current_arg->time_to_sleep = 200;
+		current_arg->time_to_die = args->args.time_to_die;
+		current_arg->time_to_eat = args->args.time_to_eat;
+		current_arg->time_to_sleep = args->args.time_to_sleep;
 		if (pthread_create(&(*thread)[index], NULL, &routine, current_arg) != 0)
 			return (1);
 		index++;
