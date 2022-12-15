@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 10:56:22 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/15 11:00:26 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/15 12:11:39 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,15 @@ typedef struct s_args
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				time_to_die;
+	int				times_to_eat;
 	int				philosopher;
 	int				*die_status;
+	int				*satiate;
 	long int		time_checkpoint;
 	pthread_mutex_t	*mutex;
 	pthread_mutex_t	*print;
 	pthread_mutex_t	*die_status_mutex;
+	pthread_mutex_t	*satiate_mutex;
 	pthread_mutex_t	checkpoint;
 }				t_args;
 
@@ -58,5 +61,7 @@ long int	get_actual_ms(void);
 int			free_all(t_manage *args, pthread_t **threads);
 
 void		ft_smart_sleep(int milisseconds);
+
+void	set_die_status(t_args *args);
 
 #endif // !PHILOSOPHERS_H

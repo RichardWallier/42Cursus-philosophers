@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 05:22:38 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/15 10:57:04 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/15 11:52:18 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,22 @@ int	main(const int argc, const char **argv)
 	if (argc != 5 && argc != 6)
 		return (printf("Wrong arguments!\n"));
 	parse_args(&manage, argv, argc);
-	if (create_mutex(&manage, ft_atoi(argv[argc - 4])) != 0)
+	if (create_mutex(&manage, ft_atoi(argv[argc - 5])) != 0)
 	{
 		free_all(&manage, &manage.threads);
 		return (printf("Error creating mutexes!\n"));
 	}
-	if (create_threads(&manage, &manage.threads, ft_atoi(argv[argc - 4])) != 0)
+	if (create_threads(&manage, &manage.threads, ft_atoi(argv[argc - 5])) != 0)
 	{
 		free_all(&manage, &manage.threads);
 		return (printf("Error creating threads!\n"));
 	}
-	if (wait_threads(&manage, &manage.threads, ft_atoi(argv[argc - 4])) != 0)
+	if (wait_threads(&manage, &manage.threads, ft_atoi(argv[argc - 5])) != 0)
 	{
 		free_all(&manage, &manage.threads);
 		return (printf("Error waiting threads\n"));
 	}
 	free_all(&manage, &manage.threads);
-	printf("return\n");
 	return (0);
 }
 
