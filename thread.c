@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 08:37:54 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/15 09:43:15 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/15 10:25:25 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	create_mutex(t_manageThreads *args, int amount_of_forks)
 
 	args->args.mutex = (pthread_mutex_t *)malloc(amount_of_forks * sizeof(pthread_mutex_t));
 	args->args.print = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	args->args.die_status_mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
 	index = 0;
 	while (index < amount_of_forks)
 	{
@@ -26,6 +27,8 @@ int	create_mutex(t_manageThreads *args, int amount_of_forks)
 		index++;
 	}
 	if (pthread_mutex_init(args->args.print, NULL) != 0)
+		return (1);
+	if (pthread_mutex_init(args->args.die_status_mutex, NULL) != 0)
 		return (1);
 	return (0);
 }
@@ -43,6 +46,7 @@ int	create_threads(t_manageThreads *args, pthread_t **thread, int philo_amount)
 		current_arg->forks = args->args.forks;
 		current_arg->mutex = args->args.mutex;
 		current_arg->print = args->args.print;
+		current_arg->die_status_mutex = args->args.die_status_mutex;
 		current_arg->philosopher = index;
 		current_arg->amount_of_forks = philo_amount;
 		current_arg->die_status = args->die_status;
@@ -63,8 +67,10 @@ int	wait_threads(t_manageThreads *args, pthread_t **thread, int threads_amount)
 	index = 0;
 	while (42)
 	{
+		pthread_mutex_lock(args->args.die_status_mutex);
 		if (*(args->die_status))
 			break;
+		pthread_mutex_unlock(args->args.die_status_mutex);
 	}
 	while (index < threads_amount)
 	{

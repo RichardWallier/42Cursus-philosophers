@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 15:16:40 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/15 09:41:35 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/15 10:27:28 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ void	*die_monitoring(void *arg)
 		{
 			pthread_mutex_lock(args->print);
 			printf("%lli %d died\n", current_time, args->philosopher);
+			pthread_mutex_lock(args->die_status_mutex);
 			*args->die_status = 1;
+			pthread_mutex_unlock(args->die_status_mutex);
 			return((void *)42);
 		}
 		pthread_mutex_unlock(&args->checkpoint);
@@ -80,9 +82,11 @@ void	*routine(void *arg)
 	pthread_t		thread;
 
 	args = arg;
+	pthread_mutex_lock(&args->checkpoint);
 	args->time_checkpoint = get_actual_ms();
 	if (pthread_mutex_init(&args->checkpoint, NULL) != 0)
 		return (NULL);
+	pthread_mutex_unlock(&args->checkpoint);
 	pthread_create(&thread, NULL, &die_monitoring, args);
 	while (42)
 	{

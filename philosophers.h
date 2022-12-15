@@ -30,6 +30,7 @@ typedef struct s_args
 	long int		time_checkpoint;
 	pthread_mutex_t	*mutex;
 	pthread_mutex_t	*print; 
+	pthread_mutex_t	*die_status_mutex; 
 	pthread_mutex_t	checkpoint;
 }				t_args;
 
