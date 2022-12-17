@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 08:37:54 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/15 15:36:56 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/17 18:12:43 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	wait_threads(t_manage *args, pthread_t **thread, int threads)
 	while (42)
 	{
 		pthread_mutex_lock(args->args.die_status_mutex);
-		if (*(args->die_status))
+		if (*(args->die_status) || *(args->satiate))
 			break ;
 		pthread_mutex_unlock(args->args.die_status_mutex);
 	}

@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 15:16:40 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/15 15:38:47 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/17 18:05:51 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,9 @@ void	eating(void *arg, int left_fork, int right_fork)
 		ft_smart_sleep(args->time_to_sleep);
 		print_status(args, "is thinking");
 		if (args->times_to_eat == 1)
-			printf("cabossi %d\n", *args->satiate = 5);
+			args->satiate[0]++;
 		args->times_to_eat--;
 	}
-
 }
 
 void	*routine(void *arg)
