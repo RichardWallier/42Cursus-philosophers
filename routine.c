@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 15:16:40 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/23 02:06:23 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/23 03:28:16 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,51 +36,12 @@ void	*die_monitoring(void *arg)
 	return (NULL);
 }
 
-void	set_die_status(t_args *args)
-{
-	pthread_mutex_lock(args->die_status_mutex);
-	*args->die_status = 1;
-	pthread_mutex_unlock(args->die_status_mutex);
-
-}
-
-void	set_checkpoint(t_args *args)
-{
-	pthread_mutex_lock(&args->checkpoint);
-	args->time_checkpoint = get_actual_ms();
-	pthread_mutex_unlock(&args->checkpoint);
-}
-
-void	print_status(t_args *args, char *message)
-{
-	pthread_mutex_lock(args->print);
-	printf("%li %d %s\n", get_actual_ms(), args->philosopher, message);
-	pthread_mutex_unlock(args->print);
-}
-
-void	count_eat(t_args *args)
-{
-	pthread_mutex_lock(args->satiate_mutex);
-	args->satiate++;
-	pthread_mutex_unlock(args->satiate_mutex);
-}
-
-void	set_satiate(t_args *args)
-{
-	if (args->times_to_eat == 0)
-	{
-		pthread_mutex_lock(args->satiate_mutex);
-		args->satiate[0]++;
-		pthread_mutex_unlock(args->satiate_mutex);
-	}
-}
-
 void	eating(void *arg, int left_fork, int right_fork)
 {
 	t_args			*args;
 
 	args = arg;
-	if (args->times_to_eat)
+	if (args->times_to_eat != -1 && args->times_to_eat != 0)
 	{
 		set_checkpoint(args);
 		pthread_mutex_lock(&args->mutex[right_fork]);
@@ -95,9 +56,12 @@ void	eating(void *arg, int left_fork, int right_fork)
 		pthread_mutex_unlock(&args->mutex[left_fork]);
 		ft_smart_sleep(args->time_to_sleep);
 		print_status(args, "is thinking");
-		if (args->times_to_eat == 1)
-			args->satiate[0]++;
 		args->times_to_eat--;
+	}
+	if (args->times_to_eat == 0)
+	{
+		set_satiate(args);
+		args->times_to_eat = -1;
 	}
 }
 

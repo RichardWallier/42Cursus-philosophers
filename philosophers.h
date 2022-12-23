@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 10:56:22 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/15 15:32:10 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/23 03:28:49 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,14 @@ int			free_all(t_manage *args, pthread_t **threads);
 
 void		ft_smart_sleep(int milisseconds);
 
-void	set_die_status(t_args *args);
+void		set_die_status(t_args *args);
+
+void	set_checkpoint(t_args *args);
+
+void	print_status(t_args *args, char *message);
+
+void	count_eat(t_args *args);
+
+void	set_satiate(t_args *args);
 
 #endif // !PHILOSOPHERS_H

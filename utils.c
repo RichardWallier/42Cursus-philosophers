@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 09:05:08 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/23 02:42:40 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/23 03:24:16 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	parse_args(t_manage *args, const char **argv, int argc)
 		args->args.time_to_die = ft_atoi(argv[argc - 3]);
 		args->args.time_to_eat = ft_atoi(argv[argc - 2]);
 		args->args.time_to_sleep = ft_atoi(argv[argc - 1]);
-		args->args.times_to_eat = -1;
+		args->args.times_to_eat = -2;
 	}
 	args->die_status = (int *)malloc(sizeof(int));
 	args->satiate = (int *)malloc(sizeof(int));
@@ -81,6 +81,6 @@ void	ft_smart_sleep(int milisseconds)
 
 	start_ms = get_actual_ms();
 	while (start_ms + milisseconds > get_actual_ms())
-		;
+		usleep(100);
 	return ;
 }
