@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/23 03:28:00 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/23 03:28:14 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/23 03:30:28 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	set_die_status(t_args *args)
 	pthread_mutex_lock(args->die_status_mutex);
 	*args->die_status = 1;
 	pthread_mutex_unlock(args->die_status_mutex);
-
 }
 
 void	set_checkpoint(t_args *args)

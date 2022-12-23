@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 15:16:40 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/23 03:28:16 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/23 03:31:44 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*die_monitoring(void *arg)
 	while (1)
 	{
 		if (!args->times_to_eat)
-			return ((void*)42) ;
+			return ((void *)42);
 		current_time = get_actual_ms();
 		pthread_mutex_lock(&args->checkpoint);
 		if (current_time >= args->time_checkpoint + args->time_to_die)
