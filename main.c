@@ -6,7 +6,7 @@
 /*   By: rwallier <rwallier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/09 05:22:38 by rwallier          #+#    #+#             */
-/*   Updated: 2022/12/17 18:15:15 by rwallier         ###   ########.fr       */
+/*   Updated: 2022/12/23 02:12:51 by rwallier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,6 @@ int	free_all(t_manage *args, pthread_t **threads)
 {
 	int	index;
 
-	index = 0;
-	while (index < args->args.amount_of_forks)
-	{
-		pthread_detach(args->threads[index]);
-		index++;
-	}
 	index = 0;
 	while (index < args->args.amount_of_forks)
 	{

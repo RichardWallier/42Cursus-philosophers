@@ -4,11 +4,11 @@ OBJECTS	=	$(SOURCES:.c=.o)
 
 NAME	=	philosophers
 
-CFLAGS	=	-Wall -Werror -Wextra
+CFLAGS	=	-Wall -Werror -Wextra -g
 
 PTHREAD_FLAGS = -pthread
 
-CC	=	clang
+CC	=	gcc
 
 RM	=	rm -f
 
